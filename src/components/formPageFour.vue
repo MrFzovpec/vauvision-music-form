@@ -7,15 +7,14 @@
     <div class="control">
       <label class="label" for>Выделите и перенесите все нужные треки</label>
       <input
-        v-on:change="handleFileUploadMusic"
         accept="audio/*"
-        ref="files"
         class="input is-primary"
         multiple
         type="file"
+        @change="handleFileUploadMusic"
       />
     </div>
-    <table v-if="songsList">
+    <table v-if="songsList.length">
       <thead>
         <th>Название трека</th>
         <th>Автор музыки</th>
@@ -25,41 +24,64 @@
         <th>Доля авторских/смежных прав</th>
       </thead>
       <tbody>
-        <tr v-for="song in Array.from(songsList)" v-bind:key="song">
-          <td>{{ song.name }}</td>
-          <td>
-            <input type="text" class="input" />
+        <tr
+          v-for="songDescription in songsDescriptonsList"
+          :key="songDescription.name"
+        >
+          <td>{{ songDescription.name }}</td>
+          <td v-for="fieldName in songDescriptionFieldsNames" :key="fieldName">
+            <input
+              v-model="songDescription[fieldName]"
+              type="text"
+              :name="`${songDescription.name}${fieldName}`"
+              class="input"
+            />
           </td>
-          <td>
-            <input type="text" class="input" />
-          </td>
-          <td>
-            <input type="text" class="input" />
-          </td>
-          <td>
-            <input type="text" class="input" />
-          </td>
-          <td>
-            <input type="text" class="input" />
-          </td>
-          
         </tr>
       </tbody>
     </table>
-    
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
+const SONG_DESCRIPTION_FIELDS = [
+  ['melodyAuthor', ''],
+  ['textAuthor', ''],
+  ['artist', ''],
+  ['bitmaker', ''],
+  ['rightsParts', '']
+];
+
+const getSongDefaultDescription = ({ name }) => {
+  return {
+    name,
+
+    ...Object.fromEntries(SONG_DESCRIPTION_FIELDS)
+  };
+};
+
 export default {
-  name: "formFour",
-  props: {
-    songsList: FileList,
-    songsTableData: Array
+  name: 'FormFour',
+
+  data() {
+    return {
+      songsDescriptonsList: [],
+      songsList: [],
+      songDescriptionFieldsNames: SONG_DESCRIPTION_FIELDS.map(
+        ([fieldName]) => fieldName
+      )
+    };
   },
+
   methods: {
-    handleFileUploadMusic() {
-      this.songsList = this.$refs.files.files;
+    handleFileUploadMusic(event) {
+      console.log(event);
+      const songsFilesList = Array.from(event.target.files);
+
+      this.songsList = songsFilesList;
+      this.songsDescriptonsList = songsFilesList.map(getSongDefaultDescription);
     }
   }
 };

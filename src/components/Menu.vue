@@ -14,7 +14,7 @@ header {
   padding-left: 5%;
   position: relative;
 }
-header h1{
-    color: white;
+header h1 {
+  color: white;
 }
 </style>

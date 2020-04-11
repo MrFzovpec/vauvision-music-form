@@ -6,8 +6,8 @@
     <div class="control">
       <label class="label">Гражданство</label>
       <input
-        type="text"
         v-model="country"
+        type="text"
         placeholder="Российской Федерации"
         class="input is-primary"
       />
@@ -18,8 +18,8 @@
         <div class="control">
           <label class="label">ФИО</label>
           <input
-            placeholder="Иванов Иван Иванович"
             v-model="authorName"
+            placeholder="Иванов Иван Иванович"
             type="text"
             class="input is-primary"
           />
@@ -31,8 +31,8 @@
         <div class="control">
           <label class="label">Место рождения</label>
           <input
-            placeholder="г. Москва"
             v-model="placeOfBirth"
+            placeholder="г. Москва"
             type="text"
             class="input is-primary"
           />
@@ -40,8 +40,8 @@
         <div class="control">
           <label class="label">Адрес регистрации</label>
           <input
-            placeholder="Как в паспорте"
             v-model="registration"
+            placeholder="Как в паспорте"
             type="text"
             class="input is-primary"
             max="6"
@@ -52,8 +52,8 @@
         <div class="control">
           <label class="label">Серия паспорта</label>
           <input
-            placeholder="4444"
             v-model="pasportSerie"
+            placeholder="4444"
             type="number"
             class="input is-primary"
             maxlength="4"
@@ -62,8 +62,8 @@
         <div class="control">
           <label class="label">Номер паспорта</label>
           <input
-            placeholder="666666"
             v-model="pasportNumber"
+            placeholder="666666"
             type="number"
             class="input is-primary"
             max="6"
@@ -72,8 +72,8 @@
         <div class="control">
           <label class="label">Кем выдан</label>
           <input
-            placeholder="Например: ФМС России"
             v-model="givenBy"
+            placeholder="Например: ФМС России"
             type="text"
             class="input is-primary"
             max="6"
@@ -86,16 +86,17 @@
       </div>
     </div>
     <div class="control">
-      <label class="label"
-        for
-      >Прикрепите 2 фото паспорта: разворот с фото + страница с регистрацией (на каждого исполнителя)</label>
+      <label class="label" for
+        >Прикрепите 2 фото паспорта: разворот с фото + страница с регистрацией
+        (на каждого исполнителя)</label
+      >
       <input
-        v-on:change="handleFileUpload"
-        accept="image/*"
         ref="files"
+        accept="image/*"
         class="input is-primary"
         multiple
         type="file"
+        @change="handleFileUpload"
       />
     </div>
   </div>
@@ -103,7 +104,7 @@
 
 <script>
 export default {
-  name: "formTwo",
+  name: 'FormTwo',
   props: {
     authorName: String,
     dateOfBirth: Date,
@@ -116,10 +117,10 @@ export default {
     country: String,
     passportScans: FileList
   },
-   methods: {
+  methods: {
     handleFileUpload() {
       this.passportScans = this.$refs.files.files;
     }
   }
-}
+};
 </script>

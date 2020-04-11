@@ -3,9 +3,12 @@
     <span class="subtitle">Заполнение данных о релизе</span>
     <br />
     <br />
-    <label for class="label">Выберите тип релиза</label>
+    <label class="label">Выберите тип релиза</label>
     <div class="select is-primary">
-      <select v-model="releaseType">
+      <select
+        :value="releaseInfo.releaseType"
+        @input="updateInfo('releaseType', $event)"
+      >
         <option>Сингл</option>
         <option>EP</option>
         <option>Сингл + EP</option>
@@ -13,16 +16,18 @@
     </div>
     <br />
     <br />
-    <div v-if="releaseType">
-      <label
-        for
-        class="label"
-      >Впишите "Псевдоним артиста – Название сингла/альбома" (если это совместный трек – пишите артистов через запятую, если это фит, то через "feat.", если нужно указать продакшн – впишите продакшн)</label>
+    <div v-if="releaseInfo.releaseType">
+      <label for class="label"
+        >Впишите "Псевдоним артиста – Название сингла/альбома" (если это
+        совместный трек – пишите артистов через запятую, если это фит, то через
+        "feat.", если нужно указать продакшн – впишите продакшн)</label
+      >
       <input
-        v-model="releaseName"
+        :value="releaseInfo.releaseName"
         class="input is-primary"
         placeholder="Например: PHARAOH feat. Молодой Платон – Тост"
         type="text"
+        @input="updateInfo"
       />
       <br />
       <br />
@@ -41,7 +46,9 @@
 
       <div v-if="filthy == 'true'">
         <br />
-        <label class="label" for>Укажите через запятую номера треков, где есть мат</label>
+        <label class="label" for
+          >Укажите через запятую номера треков, где есть мат</label
+        >
         <input
           v-model="filthyTracks"
           placeholder="Например: 1, 2, 4"
@@ -50,7 +57,9 @@
         />
       </div>
       <br />
-      <label for class="label">Желаемая дата выхода (если всё равно, ставьте ближайшую пятницу)</label>
+      <label for class="label"
+        >Желаемая дата выхода (если всё равно, ставьте ближайшую пятницу)</label
+      >
       <input v-model="releaseDate" type="date" class="input is-primary" />
       <br />
       <br />
@@ -65,22 +74,41 @@
       <br />
       <br />
       <label for class="label">Дополнительные комментарии</label>
-      <textarea name class="textarea is-primary" id cols="30" rows="10"></textarea>
+      <textarea
+        id
+        name
+        class="textarea is-primary"
+        cols="30"
+        rows="10"
+      ></textarea>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "formFirst",
+  name: 'FormFirst',
+
   props: {
-    pageNumber: { default: 1, type: Number },
-    releaseType: String,
-    releaseName: String,
-    filthy: Boolean,
-    filthyTracks: String,
-    releaseDate: Date,
-    releasePlace: String
+    releaseInfo: {
+      type: Object,
+      required: true
+    }
+  },
+
+  data() {},
+
+  methods: {
+    updateInfo(fieldName, { target }) {
+      const { value } = target;
+
+      const updatedInfo = {
+        ...this.releaseInfo,
+        [fieldName]: value
+      };
+
+      this.$emit('update', updatedInfo);
+    }
   }
 };
 </script>
